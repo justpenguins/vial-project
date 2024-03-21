@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Input, TextInput } from "@mantine/core";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -25,7 +24,7 @@ const App = () => {
     data,
     sortColumn,
     sortDirection,
-    searchFilter
+    searchFilter,
   ]); // Re-run filtering whenever the filters or data change
 
   const fetchData = async () => {
@@ -63,7 +62,9 @@ const App = () => {
     }
     if (searchFilter) {
       const search = searchFilter.toLowerCase();
-      filtered = filtered.filter(item => item.name.toLowerCase().includes(search));
+      filtered = filtered.filter((item) =>
+        item.name.toLowerCase().includes(search)
+      );
     }
 
     if (sortColumn) {
@@ -73,7 +74,7 @@ const App = () => {
 
         // sorting numerical values
         if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-          return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+          return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
         }
 
         // sorting string values
@@ -89,7 +90,6 @@ const App = () => {
     if (filtered) {
       setFilteredData([...filtered]); // Update filteredData state
     }
-
   };
 
   // Event handlers for filter changes
@@ -121,11 +121,7 @@ const App = () => {
         </div>
         <div>
           <label>Search by Name:</label>
-          <input 
-            type="text"
-            value={searchFilter}
-            onChange={handleSearch}
-          />
+          <input type="text" value={searchFilter} onChange={handleSearch} />
         </div>
         <div>
           <label>Diagnosis Date:</label>
