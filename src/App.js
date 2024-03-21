@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { Input, TextInput } from "@mantine/core";
 
 const App = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [searchFilter, setSearchFilter] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
   const [diagnosisDateFilter, setDiagnosisDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -23,6 +25,7 @@ const App = () => {
     data,
     sortColumn,
     sortDirection,
+    searchFilter
   ]); // Re-run filtering whenever the filters or data change
 
   const fetchData = async () => {
@@ -58,6 +61,10 @@ const App = () => {
     if (statusFilter) {
       filtered = filtered.filter((item) => item.status === statusFilter);
     }
+    if (searchFilter) {
+      const search = searchFilter.toLowerCase();
+      filtered = filtered.filter(item => item.name.toLowerCase().includes(search));
+    }
 
     if (sortColumn) {
       filtered.sort((a, b) => {
@@ -82,9 +89,11 @@ const App = () => {
     if (filtered) {
       setFilteredData([...filtered]); // Update filteredData state
     }
+
   };
 
   // Event handlers for filter changes
+  const handleSearch = (event) => setSearchFilter(event.target.value);
   const handleGenderChange = (event) => setGenderFilter(event.target.value);
   const handleDiagnosisDateChange = (event) =>
     setDiagnosisDateFilter(event.target.value);
@@ -100,7 +109,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Data Table</h1>
+      <h1>Patient Data Table</h1>
       <div class="inputs">
         <div>
           <label>Gender:</label>
@@ -109,6 +118,14 @@ const App = () => {
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
+        </div>
+        <div>
+          <label>Search by Name:</label>
+          <input 
+            type="text"
+            value={searchFilter}
+            onChange={handleSearch}
+          />
         </div>
         <div>
           <label>Diagnosis Date:</label>
